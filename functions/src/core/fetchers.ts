@@ -30,12 +30,22 @@ const getComunidadFeliz: UtilityBillFetcher = async (accountNumber) => {
   return response.data.totalDebt;
 };
 
-const getEdifito: UtilityBillFetcher = async () => {
+const getEdifito: UtilityBillFetcher = async (_) => {
   const response = await axios.get(`${baseUrl}/api/edifito`);
   return response.data.totalDebt;
 };
 
-export const utilitiesFunctions: Record<string, UtilityBillFetcher> = {
+const SUPPORTED_UTILITIES = [
+  'Aguas Andinas',
+  'Enel',
+  'Metrogas',
+  'Comunidad Feliz',
+  'Edifito',
+] as const;
+
+export type SupportedUtilities = (typeof SUPPORTED_UTILITIES)[number];
+
+export const utilitiesFunctions: Record<SupportedUtilities, UtilityBillFetcher> = {
   'Aguas Andinas': getAguasAndinas,
   Enel: getEnel,
   Metrogas: getMetrogas,

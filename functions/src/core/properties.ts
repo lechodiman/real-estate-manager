@@ -1,4 +1,11 @@
-export const PROPERTIES = [
+import { SupportedUtilities } from './fetchers';
+
+type Property = {
+  name: string;
+  accounts: Partial<Record<SupportedUtilities, string>>;
+};
+
+export const PROPERTIES: Property[] = [
   {
     name: 'Toro Mazote',
     accounts: {
@@ -16,4 +23,4 @@ export const PROPERTIES = [
       'Comunidad Feliz': '1508931',
     },
   },
-] as const;
+];

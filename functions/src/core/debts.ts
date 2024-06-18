@@ -1,8 +1,12 @@
-import { utilitiesFunctions } from './fetchers';
+import { SupportedUtilities, utilitiesFunctions } from './fetchers';
 
-export async function getDebts(accountNumbers: Record<string, string>) {
+export async function getDebts(
+  accountNumbers: Partial<Record<SupportedUtilities, string>>
+) {
   const debts = await Promise.all(
-    Object.entries(accountNumbers).map(async ([utility, accountNumber]) => {
+    Object.entries(accountNumbers).map(async (entry) => {
+      const [utility, accountNumber] = entry as [SupportedUtilities, string];
+
       const debt = await utilitiesFunctions[utility](accountNumber);
 
       return { name: utility, amount: debt };
