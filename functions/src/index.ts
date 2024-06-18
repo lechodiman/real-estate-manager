@@ -11,13 +11,14 @@ export const weeklyJob = scheduler.onSchedule(
     try {
       logger.info('Sending email...');
 
-      const tables = await Promise.all(
-        PROPERTIES.map(async ({ name, accounts }) => {
-          const { debts, totalDebt } = await getDebts(accounts);
+      const tables = [];
+      for (const { name, accounts } of PROPERTIES) {
+        // sequentially on purpose
+        const { debts, totalDebt } = await getDebts(accounts);
+        const table = renderEmailTable({ title: name, debts, totalDebt });
 
-          return renderEmailTable({ title: name, debts, totalDebt });
-        })
-      );
+        tables.push(table);
+      }
 
       const html = tables.join('\n\n');
 
